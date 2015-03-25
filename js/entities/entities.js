@@ -120,9 +120,8 @@ game.PlayerBaseEntity = me.Entity.extend({
         this.broken = false;
         this.health = 10;
         this.alwaysUpdate = true;
-        this.body.onCollision = this.onCollision.bind(this);
-        
-        this.type = "PlayerBaseEntity";
+        this.body.onCollision = this.onCollision.bind(this); 
+        this.type = "PlayerBase";
         
         this.renderable.addAnimation("idle", [0]);
         this.renderable.addAnimation("broken", [1]);
@@ -138,6 +137,10 @@ game.PlayerBaseEntity = me.Entity.extend({
         
         this._super(me.Entity, "update", [delta]);
         return true;
+    },
+    
+    loseHealth: function(damage){
+      this.health = this.health - damage;  
     },
     
     onCollision: function(){
@@ -205,8 +208,14 @@ game.EnemyCreep = me.Entity.extend({
         }]);
         this.health = 10;
         this.alwaysUpdate = true;
-        
-        this.setVelocity(3, 20);
+        //this.attacking lets us know if the enemy is currently attacking
+        this.attacking = false;
+        //keeps track of when our creep last attacked anything
+        this.lastAttacking = new Date().getTime();
+        //keeps track of the last time our creep hit anything
+        this.lastHit = new Date().getTime();
+        this.now = new Date().getTime();
+        this.body.setVelocity(3, 20);
         
         this.type = "EnemyCreep";
         
@@ -215,7 +224,54 @@ game.EnemyCreep = me.Entity.extend({
     
     },
     
-    update: function(){
+    update: function(delta){
+        this.now = new Date().getTime();
         
+        this.body.vel.x -= this.body.accel.x * me.timer.tick;
+        
+        me.collision.check(this, true, this.collideHandler.bind(this), true);
+        
+        
+        this.body.update(delta);
+        
+        
+        
+        this._super(me.Entity, "update", [delta]);
+        return true;
     }
+});
+
+game.GameManager = Object.extend({
+    init: function(x, y, settings){
+        this.now = new Date().getTime();
+        this.lastCreep = new Date().getTime();
+        
+        this.alwaysUpdate = true;
+    },
+    
+    update: function(){
+        this.now = new Date().getTime();
+        
+        if(Math.round(this.now/1000)%10 ===0 && (this.now - this.lastCreep >= 1000)){
+            this.lastCreep = this.now;
+            var creepe = me.pool.pull("EnemyCreep", 1000, 0, {});
+            me.game.world.addChild(creepe, 5);
+        }
+        
+        return true;
+    },
+    
+    collideHandler: function(response){
+        if(resonse.b.type==='PlayerBase'){
+            this.attacking=true;
+           // this.lastAttacking=this.now;
+            this.body.vel.x = 0;
+            this.pos.x = this.pos.x + 1;
+            if((this.now-this.lastHit >= 1000)){
+                this.lastHit = this.now;
+                response.b.loseHealth(1);
+            }
+        }
+    }
+    
 });
