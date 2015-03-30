@@ -11,6 +11,7 @@ game.PlayerEntity = me.Entity.extend({
              }
              
         }]);
+        this.type = "PlayerEntity";
     //this is where I add animations
         this.body.setVelocity(5, 20 );
         //keeps track of which direction your character is going
@@ -43,8 +44,8 @@ game.PlayerEntity = me.Entity.extend({
             this.body.vel.x = 0;
         }
         
-       if(me.input.isKeyPressed("jump") && !this.jumping && !this.falling){
-           this.jumping = true;
+       if(me.input.isKeyPressed("jump") && !this.body.jumping && !this.body.falling){
+           this.body.jumping = true;
            this.body.vel.y -= this.body.accel.y * me.timer.tick;
        }
         //^^^makes the character jump^^^
@@ -74,6 +75,10 @@ game.PlayerEntity = me.Entity.extend({
         
         this._super(me.Entity, "update", [delta]);
         return true;
+    },
+    
+    loseHealth: function(damage){
+      this.health = this.health - damage;  
     },
     
     collideHandler: function(response){
@@ -253,6 +258,24 @@ game.EnemyCreep = me.Entity.extend({
                 //updates the lastHit timer
                 this.lastHit = this.now;
                 //makes  the player base call its loseHealth function and passes it at a
+                //damage of 1
+                response.b.loseHealth(1);
+            }
+        }else if(response.b.type==='PlayerEntity'){
+            var xdif = this.pos.x - response.b.pos.x;
+            this.attacking=true;
+           // this.lastAttacking=this.now;
+            this.body.vel.x = 0;
+            //keeps moving the creep to the right to maintain its position
+            if(xdif>0){
+                console.log(xdif);
+                this.pos.x = this.pos.x + 1;
+            }
+            //checks that it has been at least 1 second since this creep hit something
+            if((this.now-this.lastHit >= 1000) && xdif>0){
+                //updates the lastHit timer
+                this.lastHit = this.now;
+                //makes  the player call its loseHealth function and passes it at a
                 //damage of 1
                 response.b.loseHealth(1);
             }
