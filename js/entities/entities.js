@@ -1,5 +1,21 @@
 game.PlayerEntity = me.Entity.extend({
     init: function(x, y, settings) {
+        this.setsuper();
+        this.setPlayerTimers();
+        this.setAttributes();
+        this.type = "PlayerEntity";
+        this.setFlags();
+ 
+        
+        
+        me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+        
+        this.addAnimation();
+    
+        this.renderable.setCurrentAnimation("idle");
+    },
+    
+    setsuper: function(){
         this._super(me.Entity, 'init', [x, y, {
              image: "player",
              width: 64,
@@ -11,23 +27,30 @@ game.PlayerEntity = me.Entity.extend({
              }
              
         }]);
-        this.type = "PlayerEntity";
-        this.health = game.data.playerHealth;
-    //this is where I add animations
-        this.body.setVelocity(game.data.playerMoveSpeed, 20 );
-        //keeps track of which direction your character is going
-        this.facing = "right";
+    },
+    
+    setPlayerTimers: function(){
         this.now = new Date().getTime();
         this.lastHit = this.now;
-        this.dead = false;
+        this.lastAttack = new Date().getTime();//havent used this
+    },
+    
+    setAttributes: function(){
+        this.health = game.data.playerHealth;
+        this.body.setVelocity(game.data.playerMoveSpeed, 20 );
         this.attack = game.data.playerAttack;
-        this.lastAttack = new Date().getTime();         //havent used this
-        me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+    },
+    
+    setFlags: function(){
+        //keeps track of which direction your character is going
+        this.facing = "right";
+        this.dead = false;  
+    },
+    
+    addAnimation: function(){
         this.renderable.addAnimation("idle", [78]);
         this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
         this.renderable.addAnimation("attack", [65, 66, 67, 68, 69, 70, 71, 72], 80);
-    
-        this.renderable.setCurrentAnimation("idle");
     },
     
     update: function(delta){
