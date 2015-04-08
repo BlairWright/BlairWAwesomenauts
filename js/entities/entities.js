@@ -151,28 +151,7 @@ game.PlayerEntity = me.Entity.extend({
     
     collideHandler: function(response){
         if(response.b.type==='EnemyBaseEntity'){
-            var ydif = this.pos.y - response.b.pos.y;
-            var xdif = this.pos.x -response.b.pos.x;
-            
-            console.log("xdif " + xdif + " ydif " + ydif);
-            
-             if(ydif<-40){
-                this.body.falling = false;
-                this.body.vel.y = -1;
-            }
-            else if(xdif>-35 && this.facing==='right' && (xdif<0)){
-               this.body.vel.x = 0;
-            //  this.pos.x = this.pos.x -1;
-            }else if(xdif<70 && this.facing==='left' && xdif>0){
-                this.body.vel.x = 0;
-            //   this.pos.x = this.pos.x +1;
-            }
-            
-            
-            if(this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >= game.data.playerAttackTimer){
-                this.lastHit = this.now;
-                response.b.loseHealth(game.data.playerAttack);
-            }
+            this.collideWithEnemyBase(response);
         }else if(response.b.type==='EnemyCreep') {
             var xdif = this.pos.x - response.b.pos.x;
             var ydif = this.pos.y - response.b.pos.y;
@@ -203,6 +182,27 @@ game.PlayerEntity = me.Entity.extend({
                 response.b.loseHealth(game.data.playerAttack);
             }
         }
+    },
+    
+    collideWithEnemyBase: function(response){
+            var ydif = this.pos.y - response.b.pos.y;
+            var xdif = this.pos.x -response.b.pos.x;
+            
+            console.log("xdif " + xdif + " ydif " + ydif);
+            
+             if(ydif<-40){
+                this.body.falling = false;
+                this.body.vel.y = -1;
+            }
+            else if(xdif>-35 && this.facing==='right' && (xdif<0)){
+               this.body.vel.x = 0;
+            }else if(xdif<70 && this.facing==='left' && xdif>0){
+                this.body.vel.x = 0;
+            }
+            if(this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >= game.data.playerAttackTimer){
+                this.lastHit = this.now;
+                response.b.loseHealth(game.data.playerAttack);
+            }
     }
 });
 
