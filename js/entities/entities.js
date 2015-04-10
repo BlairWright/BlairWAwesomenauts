@@ -183,7 +183,7 @@ game.PlayerEntity = me.Entity.extend({
             var xdif = this.pos.x - response.b.pos.x;
             var ydif = this.pos.y - response.b.pos.y;
             
-            this.stopMoveMent(xdif);
+            this.stopMovement(xdif);
             
             if(this.checkAttack(xdif, ydif));{
               this.hitCreep(response);  
