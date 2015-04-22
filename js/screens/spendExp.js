@@ -25,11 +25,9 @@ game.SpendExp = me.ScreenObject.extend({
                         this.font.draw(renderer.getContext(), "F2: ADD STARTING GOLD ", this.pos.x, this.pos.y + 150);
                         this.font.draw(renderer.getContext(), "F3: INCREASE ATTACK DAMAGE ", this.pos.x, this.pos.y + 200);
                         this.font.draw(renderer.getContext(), "F4: INCREASE STARTING HEALTH ", this.pos.x, this.pos.y + 250);
-                    },
-                    
-                    update: function(dt){
-                        return true;
                     }
+                    
+                    
                 })));
                 
                 this.handler = me.event.subscribe(me.event.KEYDOWN, function (action, keyCode, edge){
@@ -64,6 +62,6 @@ game.SpendExp = me.ScreenObject.extend({
                 me.input.unbindKey(me.input.KEY.F3, "F3");
                 me.input.unbindKey(me.input.KEY.F4, "F4");
                 me.input.unbindKey(me.input.KEY.F5, "F5");
-                me.event.unsubscrbe(this.handler);
+                me.event.unsubscribe(this.handler);
 	}
 });
