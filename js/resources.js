@@ -4,7 +4,7 @@ game.resources = [
 	 * @example
 	 * {name: "example", type:"image", src: "data/img/example.png"},
 	 */
-               {name: "background-tiles", type:"image", src: "data/img/background-tiles.png"},
+         {name: "background-tiles", type:"image", src: "data/img/background-tiles.png"},
          {name: "meta-tiles", type:"image", src: "data/img/meta-tiles.png"},
          {name: "player", type:"image", src: "data/img/orcSpear.png"},
          {name: "tower", type:"image", src: "data/img/tower_round.svg.png"},
@@ -13,10 +13,6 @@ game.resources = [
          {name: "exp-screen", type:"image", src: "data/img/loadpic.png"},
          {name: "gold-screen", type:"image", src: "data/img/spend.png"},
          {name: "spear", type:"image", src: "data/img/spear.png"},
-         {name: "sandtiles", type:"image", src: "data/img/sandtiles.png"},
-         {name: "woodpieces", type:"image", src: "data/img/woodpieces.png"},
-         {name: "treetiles", type:"image", src: "data/img/treetiles.png"},
-         {name: "AwesomenautsBG", type:"image", src: "data/img/AwesomenautsBG.png"},
          {name: "minimap", type:"image", src: "data/img/minimap.png"},
          {name: "load-screen", type:"image", src: "data/img/loadpic.png"},
          {name: "new-screen", type:"image", src: "data/img/newpic.png"},
@@ -31,7 +27,7 @@ game.resources = [
 	 * {name: "example01", type: "tmx", src: "data/map/example01.tmx"},
 	 * {name: "example01", type: "tmx", src: "data/map/example01.json"},
  	 */
-         {name: "level01", type: "tmx", src: "data/map/test.tmx"},
+         {name: "level01", type: "tmx", src: "data/map/test.tmx"}
 	/* Background music. 
 	 * @example
 	 * {name: "example_bgm", type: "audio", src: "data/bgm/"},
